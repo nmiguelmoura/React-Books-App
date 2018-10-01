@@ -33,10 +33,22 @@ class BookDetail extends Component {
         const book = this.state.book;
         console.log(book);
         return (<div>
-            <img src={book.imageLinks.thumbnail} />
+            <img alt={book.title} src={book.imageLinks.thumbnail} />
             <p>{book.title}</p>
             <p>{book.subTitle}</p>
+            <p>{book.authors.reduce((acc, current) => {
+                return `${acc}, ${current}`
+            })}</p>
             <p>{book.description}</p>
+            <p>{book.publisher}</p>
+            <ul>
+                {book.industryIdentifiers.map(identifier => (
+                    <li key={identifier.type}>
+                        {`${identifier.type}: ${identifier.identifier}`}
+                    </li>
+                ))}
+            </ul>
+            <a href={book.previewLink} target="_blank">Preview book</a>
         </div>);
     }
 

@@ -11,6 +11,7 @@ const Book = (props) => {
                     src={book.imageLinks.smallThumbnail}
                     alt={book.title} />
                 <p>{book.title}</p>
+                <p>{book.subtitle}</p>
                 <p>{book.authors.reduce((acc, current) => {
                     return `${acc}, ${current}`;
                 })}</p>
