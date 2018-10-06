@@ -1,43 +1,61 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import * as BooksAPI from '../helpers/BooksAPI';
 import CategoryList from './CategoryList';
 import * as Helpers from '../helpers/Helpers';
+import SearchBar from './SearchBar';
+import { LIST_TYPES } from '../helpers/Constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from "@fortawesome/free-solid-svg-icons/index";
 
 class SearchBooks extends Component {
     state = {
+        shelf: [],
         books: [],
         query: '',
-        searchBy: 'title',
-        categorize: false
+        categorize: false,
+        bookMenuOpen: null
     };
 
     componentDidMount() {
-        BooksAPI.getAll()
-        .then(books => {
-            this.setState(prev => ({
-                books
-            }));
-
-            console.log(this.state.books);
-        })
+        this.handleShelf(this.props);
     }
 
-    searchChange =(value) => {
+    componentWillReceiveProps(props) {
+        this.handleShelf(props);
+    }
+
+    handleShelf(props) {
         this.setState(prev => ({
-            query: value
-        }))
+            shelf: props.shelf
+        }));
+    }
+
+    changeBookStatus = (id, status) => {
+        this.setState(prev => ({
+            bookMenuOpen: null
+        }));
+
+        this.props.changeBookStatus(id, status);
     };
 
-    filterBooks() {
-        return Helpers.filterBooks(this.state);
-    }
+    toggleBookMenu = (id) => {
+        this.setState(prev => {
+            if(prev.bookMenuOpen === id) {
+                id = null;
+            }
 
-    searchByChange = (value) => {
+            return {
+                bookMenuOpen: id
+            }
+        });
+    };
+
+    searchChange = (value) => {
         this.setState(prev => ({
-            searchBy: value
-        }));
+            query: value
+        }), this.performSearch);
     };
 
     toggleCategories = () => {
@@ -46,49 +64,120 @@ class SearchBooks extends Component {
         }));
     };
 
-    render() {
-        const groups = this.filterBooks(this.state.categorize),
-            groupKeys = Object.getOwnPropertyNames(groups);
+    showCategoriesButton = () => {
+        if(this.state.books.length === 0) {
+            return false;
+        }
 
+        let aux = null;
+        for(const book of this.state.books) {
+            if(book.categories.length > 1) {
+                return true;
+            }
+
+            if(aux && book.categories[0] !== aux) {
+                return true;
+            }
+
+            aux = book.categories[0];
+        }
+
+        return false;
+    };
+
+    performSearch = () => {
+        if(this.state.query) {
+            BooksAPI.search(this.state.query)
+            .then(books => {
+                if(!Array.isArray(books)) {
+                    books = [];
+                }
+
+                if(books.length > 0) {
+                    let idToShelf = {};
+                    for(const book of this.state.shelf) {
+                        idToShelf[book.id] = book.shelf;
+                    }
+
+                    for(const book of books) {
+                        book.shelf = idToShelf[book.id];
+                    }
+                }
+
+                this.setState(prev => ({
+                    books
+                }));
+            })
+            .catch(error => console.log(error));
+        }
+    };
+
+    renderGroups(groupKeys, groups) {
         return (
             <div>
-                <div>
-                    <button
-                        onClick={() => {
-                            window.history.back();
-                        }}>
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </button>
-                    <input
-                        value={this.state.query}
-                        onChange={(event) => {
-                            this.searchChange(event.target.value);
-                        }}/>
-                    <select
-                        value={this.state.searchBy}
-                        onChange={(event) => {
-                            this.searchByChange(event.target.value);
-                        }}>
-                        <option value='title'>Title and subtitle</option>
-                        <option value='author'>Author</option>
-                        <option value='isbn'>ISBN</option>
-                    </select>
-                    <button
-                        onClick={this.toggleCategories}>
-                        <FontAwesomeIcon icon={faClipboardList}/>
-                    </button>
-                </div>
-
                 {groupKeys.map(key => (
                     <CategoryList
                         name={key}
                         books={groups[key]}
                         key={key}
+                        bookStatus={this.props.bookStatus}
+                        changeBookStatus={this.changeBookStatus}
+                        toggleBookMenu={this.toggleBookMenu}
+                        bookMenuOpen={this.state.bookMenuOpen}
                     />
                 ))}
             </div>
         );
     }
+
+    render() {
+        let groups = {},
+            groupKeys;
+        switch(this.props.type) {
+            case LIST_TYPES.SEARCH:
+                if(this.state.books.length > 0) {
+                    groups = this.state.categorize ?
+                        Helpers.splitByCategories(this.state.books) :
+                        {'Search Results': this.state.books};
+                }
+
+                groupKeys = Object.getOwnPropertyNames(groups);
+
+                return (
+                    <div>
+                        <SearchBar
+                            query={this.state.query}
+                            searchChange={this.searchChange}
+                            toggleCategories={this.toggleCategories}
+                            categoriesAvailable={this.showCategoriesButton()}
+                        />
+                        {this.renderGroups(groupKeys, groups)}
+                    </div>
+                );
+
+            case LIST_TYPES.SHELF:
+            default:
+                if(this.state.shelf.length > 0) {
+                    groups = Helpers.splitByShelf(this.state.shelf);
+                }
+
+                groupKeys = Object.getOwnPropertyNames(groups);
+                return (
+                    <div>
+                        {this.renderGroups(groupKeys, groups)}
+                        <Link to='/search'>
+                            <FontAwesomeIcon icon={faSearch} />
+                        </Link>
+                    </div>
+                );
+        }
+    }
 }
+
+SearchBooks.proptypes = {
+    type: PropTypes.string,
+    shelf: PropTypes.array,
+    changeBookStatus: PropTypes.func.isRequired
+};
 
 export default SearchBooks;

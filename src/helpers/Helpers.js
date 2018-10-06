@@ -1,64 +1,58 @@
+import {TEXT_STATUS} from "../res/Texts";
+
 export const splitByCategories = (books) => {
     let cat = {};
 
-    books.forEach(book => {
-        if(book.categories) {
-            book.categories.forEach(category => {
-                if(!cat[category])
-                    cat[category] = [];
+    if(books) {
+        books.forEach(book => {
+            if(book.categories) {
+                book.categories.forEach(category => {
+                    if(!cat[category])
+                        cat[category] = [];
 
-                cat[category].push(book);
-            });
-        }
-    });
+                    cat[category].push(book);
+                });
+            }
+        });
+    }
 
     return cat;
 };
 
-export const filterBooks = ({books, query, searchBy, categorize}) => {
-    if(query) {
-        books = books.filter(book => {
-            switch(searchBy) {
-                case 'author':
-                    const authors = book.authors.reduce((acc, current) => {
-                        return `${acc} ${current}`;
-                    });
+export const splitByShelf = (books) => {
+    let shelfs = {};
 
-                    if(authors.toLowerCase().includes(query)) {
-                        return book;
-                    }
-                    break;
+    let shelfName;
 
-                case 'isbn':
-                    const isbn = book.industryIdentifiers.reduce((acc, current) => {
-                        return `${acc.identifier} ${current.identifier}`;
-                    });
+    for(const book of books) {
+        if(!book.shelf) {
+            continue;
+        }
 
-                    console.log(isbn);
+        shelfName = getShelfName(book.shelf);
 
-                    if(isbn.toLowerCase().includes(query)) {
-                        return book;
-                    }
-                    break;
+        if(!shelfs[shelfName]) {
+            shelfs[shelfName] = [];
+        }
 
-                case 'title':
-                default:
-                    if(book.title.toLowerCase().includes(query)
-                        || (book.subtitle && book.subtitle.toLowerCase().includes(query))) {
-                        return book;
-                    }
-                    break;
-            }
-
-            return false;
-        })
+        shelfs[shelfName].push(book);
     }
 
-    if(categorize) {
-        return splitByCategories(books);
-    } else {
-        return {
-            'Search results': books
-        }
+    return shelfs;
+};
+
+const getShelfName = (shelf) => {
+    switch(shelf) {
+        case 'wantToRead':
+            return TEXT_STATUS.WANT_TO_READ;
+
+        case 'currentlyReading':
+            return TEXT_STATUS.CURRENTLY_READING;
+
+        case 'read':
+            return TEXT_STATUS.READ;
+
+        default:
+            return '';
     }
 };
