@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import * as BooksAPI from '../helpers/BooksAPI';
 import CategoryList from './CategoryList';
 import * as Helpers from '../helpers/Helpers';
 import SearchBar from './SearchBar';
 import { LIST_TYPES } from '../helpers/Constants';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from "@fortawesome/free-solid-svg-icons/index";
 
 class SearchBooks extends Component {
     state = {
@@ -165,9 +162,6 @@ class SearchBooks extends Component {
                 return (
                     <div>
                         {this.renderGroups(groupKeys, groups)}
-                        <Link to='/search'>
-                            <FontAwesomeIcon icon={faSearch} />
-                        </Link>
                     </div>
                 );
         }

@@ -5,7 +5,10 @@ import SearchBooks from './components/SearchBooks';
 import BookDetail from './components/BookDetail';
 import { LIST_TYPES, STATUS } from "./helpers/Constants";
 import * as BooksAPI from "./helpers/BooksAPI";
-import styles from './app.css';
+import 'typeface-roboto';
+import './app.css';
+import '../node_modules/bootstrap/dist/css/bootstrap-grid.css';
+import 'font-awesome/css/font-awesome.min.css';
 
 class App extends Component {
     state = {
