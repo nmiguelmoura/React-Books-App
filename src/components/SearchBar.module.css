@@ -1,0 +1,33 @@
+.input {
+    width: 100%;
+    height: 36px;
+    text-indent: 10px;
+    outline: none;
+}
+
+.search-sign {
+    border-left: 1px solid white;
+    height: 36px;
+    background-color: #eee;
+    color: var(--color-1);
+    padding-top: 6px;
+    padding-left: 16px;
+}
+
+.cat {
+    border: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: var(--color-1);
+    background-color: #eee;
+    padding-left: 4px;
+}
+
+.cat-active {
+    opacity: 1;
+}
+
+.cat-inactive {
+    opacity: 0.5;
+}

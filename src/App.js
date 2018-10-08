@@ -8,7 +8,6 @@ import * as BooksAPI from "./helpers/BooksAPI";
 import 'typeface-roboto';
 import './app.css';
 import '../node_modules/bootstrap/dist/css/bootstrap-grid.css';
-import 'font-awesome/css/font-awesome.min.css';
 
 class App extends Component {
     state = {

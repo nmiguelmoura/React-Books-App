@@ -48,7 +48,7 @@ class BookDetail extends Component {
                     </li>
                 ))}
             </ul>
-            <a href={book.previewLink} target="_blank">Preview book</a>
+            <a href={book.previewLink} rel="noopener noreferrer" target="_blank">Preview book</a>
         </div>);
     }
 

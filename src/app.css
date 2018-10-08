@@ -44,4 +44,10 @@ a {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: Roboto;
+}
+
+.nopadding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }

@@ -1,0 +1,15 @@
+.icon {
+    margin-top: 80px;
+    color: var(--color-1);
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+
+.message {
+    margin-top: 10px;
+    text-align: center;
+    color: var(--color-1);
+    font-size: 0.875rem;
+}

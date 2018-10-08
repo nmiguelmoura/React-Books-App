@@ -4,7 +4,9 @@ import * as BooksAPI from '../helpers/BooksAPI';
 import CategoryList from './CategoryList';
 import * as Helpers from '../helpers/Helpers';
 import SearchBar from './SearchBar';
+import NoResults from './NoResults';
 import { LIST_TYPES } from '../helpers/Constants';
+import {NO_RESULTS} from "../res/Texts";
 
 class SearchBooks extends Component {
     state = {
@@ -127,9 +129,29 @@ class SearchBooks extends Component {
         );
     }
 
+    checkIfNoResults() {
+        if (this.state.books.length === 0) {
+            if (this.props.type === 0) {
+                return (
+                    <NoResults
+                        icon={0}
+                        message={NO_RESULTS.SHELF} />
+                );
+            } else if (this.props.type === 1) {
+                return (
+                    <NoResults
+                        icon={this.state.query ? 2 : 1}
+                        message={this.state.query ? NO_RESULTS.SEARCH_NO_RESULTS : NO_RESULTS.SEARCH_NO_WORD}
+                    />
+                );
+            }
+        }
+    }
+
     render() {
         let groups = {},
             groupKeys;
+
         switch(this.props.type) {
             case LIST_TYPES.SEARCH:
                 if(this.state.books.length > 0) {
@@ -149,6 +171,8 @@ class SearchBooks extends Component {
                             categoriesAvailable={this.showCategoriesButton()}
                         />
                         {this.renderGroups(groupKeys, groups)}
+
+                        {this.checkIfNoResults()}
                     </div>
                 );
 
@@ -162,6 +186,8 @@ class SearchBooks extends Component {
                 return (
                     <div>
                         {this.renderGroups(groupKeys, groups)}
+
+                        {this.checkIfNoResults()}
                     </div>
                 );
         }
