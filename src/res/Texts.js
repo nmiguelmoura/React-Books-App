@@ -14,7 +14,8 @@ export const TEXT_STATUS = {
 export const INPUT_SEARCH_PLACEHOLDER = 'Type to search';
 
 export const NO_RESULTS = {
-    "SHELF": "You don't have any books in your shelf.",
-    "SEARCH_NO_RESULTS": "No books have been found on your search.",
-    "SEARCH_NO_WORD": "Please type a word to search."
+    LOADING: 'Please wait...',
+    SHELF: "You don't have any books in your shelf.",
+    SEARCH_NO_RESULTS: "No books have been found on your search.",
+    SEARCH_NO_WORD: "Please type a word to search."
 };

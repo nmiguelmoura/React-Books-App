@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Header from './components/Header';
 import { Route } from 'react-router-dom';
-import SearchBooks from './components/SearchBooks';
+import ListBooks from './components/ListBooks';
 import BookDetail from './components/BookDetail';
 import { LIST_TYPES, STATUS } from "./helpers/Constants";
 import * as BooksAPI from "./helpers/BooksAPI";
@@ -62,7 +62,7 @@ class App extends Component {
                 <Route
                     exact path='/'
                     render={() => (
-                        <SearchBooks
+                        <ListBooks
                             type={LIST_TYPES.SHELF}
                             shelf={this.state.shelf}
                             changeBookStatus={this.changeBookStatus}
@@ -73,7 +73,7 @@ class App extends Component {
                 <Route
                     path='/search'
                     render={() => (
-                        <SearchBooks
+                        <ListBooks
                             type={LIST_TYPES.SEARCH}
                             shelf={this.state.shelf}
                             changeBookStatus={this.changeBookStatus}

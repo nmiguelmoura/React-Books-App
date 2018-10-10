@@ -25,7 +25,8 @@ const Header = (props) => {
             break;
     }
 
-    return(<header className='container-fluid'>
+    return(
+        <header className={`container-fluid ${styles.header}`}>
             <div className='row'>
                 {path &&
                     <div className="col-1 nopadding">
@@ -41,13 +42,15 @@ const Header = (props) => {
                 <div className={path ? 'col-10' : 'col-11'}>
                     <p className={styles.title}>{title}</p>
                 </div>
-                <div className='col-1 nopadding'>
-                    <Link
-                        className={[styles.btn, styles['btn-right']].join(' ')}
-                        to='/search'>
-                        <FontAwesomeIcon icon={faPlus}/>
-                    </Link>
-                </div>
+                {path === '' &&
+                    <div className='col-1 nopadding'>
+                        <Link
+                            className={[styles.btn, styles['btn-right']].join(' ')}
+                            to='/search'>
+                            <FontAwesomeIcon icon={faPlus}/>
+                        </Link>
+                    </div>
+                }
             </div>
         </header>
     );

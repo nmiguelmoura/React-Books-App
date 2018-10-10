@@ -21,7 +21,12 @@ const SearchBar = (props) => {
                 <div className='col-2 nopadding'>
                     <button
                         onClick={props.toggleCategories}
-                        className={props.categoriesAvailable ? [styles.cat, styles["cat-active"]].join(" ") : [styles.cat, styles["cat-inactive"]].join(" ")}
+                        className={
+                            props.categoriesAvailable ?
+                                [styles.cat, styles["cat-active"]].join(" ") :
+                                [styles.cat, styles["cat-inactive"]].join(" ")
+                        }
+                        data-pressed={props.categorize}
                     >
                         <FontAwesomeIcon icon={faClipboardList}/>
                     </button>
@@ -36,7 +41,8 @@ SearchBar.propTypes = {
     query: PropTypes.string,
     searchChange: PropTypes.func.isRequired,
     toggleCategories: PropTypes.func.isRequired,
-    categoriesAvailable: PropTypes.bool
+    categoriesAvailable: PropTypes.bool,
+    categorize: PropTypes.bool
 };
 
 export default SearchBar;

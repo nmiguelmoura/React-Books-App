@@ -1,6 +1,6 @@
 @import '../config.css';
 
-header {
+.header {
     background-color: var(--color-1);
     height: 40px;
     color: white;
@@ -29,3 +29,20 @@ header {
     padding-right: 10px;
 }
 
+@media screen and (min-width: 768px) {
+    .header {
+        height: 50px;
+    }
+
+    .title {
+        padding-top: 10px;
+    }
+
+    .btn {
+        padding-top: 14px;
+    }
+
+    .btn-right {
+        padding-right: 0;
+    }
+}
