@@ -29,7 +29,7 @@ const StatusList = (props) => {
                         <li
                             className={styles.li}
                             key={item.id}
-                            data-selected={props.shelf === item.id || (!props.shelf && item.id === 0)}
+                            data-selected={props.shelf === item.id || (!props.shelf && item.id === 'none')}
                             onClick={() => {
                                 props.changeBookStatus(props.bookId, item.id);
                             }}
