@@ -48,20 +48,20 @@ class BookDetail extends Component {
         return (
             <div className={`container ${styles.main}`}>
                 <div className="row">
-                    <div className={`col-12 ${styles.image}`}>
+                    <div className={`col-12 col-md-4 ${styles.image}`}>
                         <img alt={book.title} src={book.imageLinks.thumbnail}/>
+                        <div className={styles['primary-info']}>
+                            <p className={styles.title}>{book.title}</p>
+                            <p className={styles['sub-title']}>{book.subtitle}</p>
+                            <p className={styles.authors}>{book.authors.reduce((acc, current) => {
+                                return `${acc}, ${current}`
+                            })}</p>
+                        </div>
                     </div>
-                    <div className={`col-12 ${styles['primary-info']}`}>
-                        <p className={styles.title}>{book.title}</p>
-                        <p className={styles['sub-title']}>{book.subtitle}</p>
-                        <p className={styles.authors}>{book.authors.reduce((acc, current) => {
-                            return `${acc}, ${current}`
-                        })}</p>
-                    </div>
-                    <div className={`col-12 ${styles['secondary-info']}`}>
-                        <p className={styles.description}>{book.description}</p>
-                    </div>
-                    <div className='col-12'>
+                    <div className="col-12 col-md-8">
+                        <div className={styles['secondary-info']}>
+                            <p className={styles.description}>{book.description}</p>
+                        </div>
                         <div className={styles['extra-info']}>
                             <p className={styles.publisher}>{book.publisher}</p>
                             <ul className={styles.identifiers}>
@@ -72,15 +72,15 @@ class BookDetail extends Component {
                                 ))}
                             </ul>
                         </div>
-                    </div>
-                    <div className={`col-12 ${styles['preview-info']}`}>
-                        <a
-                            className={styles['preview-link']}
-                            href={book.previewLink}
-                            rel="noopener noreferrer"
-                            target="_blank">
-                            Preview book
-                        </a>
+                        <div className={styles['preview-info']}>
+                            <a
+                                className={styles['preview-link']}
+                                href={book.previewLink}
+                                rel="noopener noreferrer"
+                                target="_blank">
+                                Preview book
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

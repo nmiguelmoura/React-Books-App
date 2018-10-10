@@ -41,3 +41,9 @@
     background-color: black;
 }
 
+@media screen and (min-width: 768px) {
+    .img {
+        height: 200px;
+    }
+}
+

@@ -3,14 +3,13 @@
 }
 
 .image {
-    margin-bottom: 20px;
     width: 100%;
 }
 
 .image img {
     display: block;
     max-width: 100%;
-    margin: 0 auto;
+    margin: 0 auto 20px auto;
 }
 
 .primary-info,
@@ -39,7 +38,7 @@
 
 .extra-info {
     background-color: #ddd;
-    padding: 10px;
+    padding: 6px 10px 10px 10px;
     font-size: 0.75rem;
 }
 
@@ -61,4 +60,15 @@
     font-size: 0.875rem;
     text-align: center;
     padding-top: 12px;
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        margin-top: 40px;
+    }
+
+    .image img {
+        margin-left: 0;
+        margin-right: 0;
+    }
 }

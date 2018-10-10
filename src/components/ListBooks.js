@@ -9,13 +9,15 @@ import {LIST_TYPES} from '../helpers/Constants';
 import {NO_RESULTS} from "../res/Texts";
 
 class ListBooks extends Component {
+    timer = null;
+
     state = {
         shelf: [],
         books: [],
         query: '',
         categorize: false,
         bookMenuOpen: null,
-        loading: false
+        loading: false,
     };
 
     componentDidMount() {
@@ -55,7 +57,12 @@ class ListBooks extends Component {
     searchChange = (value) => {
         this.setState(prev => ({
             query: value
-        }), this.performSearch);
+        }), () => {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+                this.performSearch();
+            }, 200);
+        });
     };
 
     toggleCategories = () => {
@@ -92,8 +99,8 @@ class ListBooks extends Component {
     }
 
     performSearch = () => {
-        this.setLoading(true);
         if (this.state.query) {
+            this.setLoading(true);
             BooksAPI.search(this.state.query)
             .then(books => {
                 if (!Array.isArray(books)) {
@@ -120,6 +127,10 @@ class ListBooks extends Component {
                 this.setLoading(false);
                 console.log(error);
             });
+        } else {
+            this.setState(prev => ({
+                books: []
+            }));
         }
     };
 
