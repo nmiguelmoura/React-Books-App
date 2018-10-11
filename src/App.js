@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Header from './components/Header';
-import { Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import ListBooks from './components/ListBooks';
 import BookDetail from './components/BookDetail';
 import { LIST_TYPES, STATUS } from "./helpers/Constants";
@@ -42,8 +43,9 @@ class App extends Component {
                     const book = shelf.find(b => {
                             if(b.id === id) {
                                 b.shelf = status;
-                                return b;
                             }
+
+                            return b.id === id;
                         });
 
                     if(!book) {
@@ -63,35 +65,41 @@ class App extends Component {
         return (
             <div className="App">
                 <Header />
-                <Route
-                    exact path='/'
-                    render={() => (
-                        <ListBooks
-                            type={LIST_TYPES.SHELF}
-                            shelf={this.state.shelf}
-                            changeBookStatus={this.changeBookStatus}
-                        />
-                    )}
-                />
+                <TransitionGroup>
+                    <CSSTransition key={this.props.location.key} classNames='fade' timeout={300} appear>
+                        <Switch location={this.props.location}>
+                            <Route
+                                exact path='/'
+                                render={() => (
+                                    <ListBooks
+                                        type={LIST_TYPES.SHELF}
+                                        shelf={this.state.shelf}
+                                        changeBookStatus={this.changeBookStatus}
+                                    />
+                                )}
+                            />
 
-                <Route
-                    path='/search'
-                    render={() => (
-                        <ListBooks
-                            type={LIST_TYPES.SEARCH}
-                            shelf={this.state.shelf}
-                            changeBookStatus={this.changeBookStatus}
-                        />
-                    )}
-                />
+                            <Route
+                                path='/search'
+                                render={() => (
+                                    <ListBooks
+                                        type={LIST_TYPES.SEARCH}
+                                        shelf={this.state.shelf}
+                                        changeBookStatus={this.changeBookStatus}
+                                    />
+                                )}
+                            />
 
-                <Route
-                    path='/book/:id'
-                    component={BookDetail}
-                />
+                            <Route
+                                path='/book/:id'
+                                component={BookDetail}
+                            />
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
             </div>
         );
     }
 }
 
-export default App;
+export default withRouter(App);
