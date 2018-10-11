@@ -62,6 +62,7 @@ class App extends Component {
     };
 
     render() {
+        // Transition according to example in https://codesandbox.io/s/5yl24j0rz4
         return (
             <div className="App">
                 <Header />
