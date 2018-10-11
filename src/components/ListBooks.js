@@ -39,7 +39,8 @@ class ListBooks extends Component {
             bookMenuOpen: null
         }));
 
-        this.props.changeBookStatus(id, status);
+        const bookInfo = this.state.books.find(book => book.id === id);
+        this.props.changeBookStatus(id, status, bookInfo);
     };
 
     toggleBookMenu = (id) => {
@@ -78,15 +79,17 @@ class ListBooks extends Component {
 
         let aux = null;
         for (const book of this.state.books) {
-            if (book.categories.length > 1) {
-                return true;
-            }
+            if(book.categories) {
+                if (book.categories.length > 1) {
+                    return true;
+                }
 
-            if (aux && book.categories[0] !== aux) {
-                return true;
-            }
+                if (aux && book.categories[0] !== aux) {
+                    return true;
+                }
 
-            aux = book.categories[0];
+                aux = book.categories[0];
+            }
         }
 
         return false;

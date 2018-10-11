@@ -28,7 +28,7 @@ class App extends Component {
         .catch(error => console.log(error))
     }
 
-    changeBookStatus = (id, status) => {
+    changeBookStatus = (id, status, bookInfo) => {
         BooksAPI.update(id, status)
             .then(() => {
                 let shelf = this.state.shelf;
@@ -39,13 +39,17 @@ class App extends Component {
 
                     shelf.splice(index, 1);
                 } else {
-                    shelf.find(book => {
-                        if(book.id === id) {
-                            book.shelf = status;
-                        }
+                    const book = shelf.find(b => {
+                            if(b.id === id) {
+                                b.shelf = status;
+                                return b;
+                            }
+                        });
 
-                        return book.id === id;
-                    });
+                    if(!book) {
+                        bookInfo.shelf = status;
+                        shelf.push(bookInfo);
+                    }
                 }
 
                 this.setState(prev => ({
